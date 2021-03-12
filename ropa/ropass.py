@@ -63,7 +63,7 @@ class Upload():
             else:
                 resultado = "No se encontro coincidencias:"
         return resultado
-       # raise web.seeother('/upload')
+        raise web.seeother('/upload')
 
 if __name__ == "__main__":
    app = web.application(urls, globals()) 
