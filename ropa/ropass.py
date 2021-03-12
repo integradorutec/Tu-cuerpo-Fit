@@ -6,49 +6,44 @@ import numpy as np
 urls = ('/upload', 'Upload')
 
 class Upload():
-    
+
     def GET(self):
         web.header("Content-Type","text/html; charset=utf-8")
         return """
         <html>
             <head>
-                <meta charset="utf-8">
-                <meta name="viewport" content="width=device-width">
-                <title>T</title>
-                <h1 class="display-1" align="center">Bienvenido</h1>
             </head>
-            <body align="center" style="background-color:#F6DDCC">
+            <body>
                 <form method="POST" enctype="multipart/form-data" action="">
                     <input type="file" name="myfile" />
                     <br/>
-                    <input type="submit"ipos de Ropa />
+                    <input type="submit" />
                 </form>
             </body>
         </html>"""
 
     def POST(self):
         x = web.input(myfile={})
-        filedir = '/workspace/ropa/static/' # change this to the directory you want to store the file in.
+        filedir = '/path/where/you/want/to/save' # change this to the directory you want to store the file in.
         if 'myfile' in x: # to check if the file-object is created
             filepath=x.myfile.filename.replace('\\','/') # replaces the windows-style slashes with linux ones.
             filename=filepath.split('/')[-1] # splits the and chooses the last part (the filename with extension)
-            fout = open(filedir +'/'+ filename,'wb') # creates the file where the uploaded file should be stored
+            fout = open(filedir +'/'+ filename,'w') # creates the file where the uploaded file should be stored
             fout.write(x.myfile.file.read()) # writes the uploaded file to the newly created file.
             fout.close() # closes the file, upload complete.
 
+
         np.set_printoptions(suppress=True)
-        model = tensorflow.keras.models.load_model('/workspace/ropa/static/keras_model.h5')
+        model = tensorflow.keras.models.load_model('static/keras_model.h5')
         data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
-        image = Image.open('/workspace/ropa/static/'+filename)
-        size = (224, 224)
+        image = Image.open('test_photo.jpg')
         image = ImageOps.fit(image, size, Image.ANTIALIAS)
         image_array = np.asarray(image)
         image.show()
         normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1
         data[0] = normalized_image_array
         prediction = model.predict(data)
-        prediction = model.predict(data)
-        prediction = model.predict(data)
+
         for i in prediction:
             if i[0] > 0.7:
                 resultado = "Es un vestido: "
@@ -65,6 +60,8 @@ class Upload():
         return resultado
         raise web.seeother('/upload')
 
+        
+
 if __name__ == "__main__":
-   app = web.application(urls, globals()) 
-   app.run()
+    app = web.application(urls, globals()) 
+    app.run()
