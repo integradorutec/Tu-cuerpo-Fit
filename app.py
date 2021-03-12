@@ -1,7 +1,7 @@
 import tensorflow.keras
 from PIL import Image, ImageOps
 import numpy as np
-from index.php import 
+
 
 # Disable scientific notation for clarity
 np.set_printoptions(suppress=True)
@@ -16,7 +16,7 @@ data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
 # Replace this with the path to your image
 
-image = Image.open('prueba3.jpg')
+image = Image.open('pruebaca.jpg')
 
 #resize the image to a 224x224 with the same strategy as in TM2:
 #resizing the image to be at least 224x224 and then cropping from the center
@@ -43,3 +43,5 @@ for i in prediction:
 
     if i[1] > 0.8:
         print("Eres una persona con sobrepeso y tu dieta es: ")
+    if i[2] > 0.8:
+        print("Eres una pantalon: ")

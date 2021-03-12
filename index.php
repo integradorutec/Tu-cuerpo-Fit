@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<?php
-echo shell_exec("python /var/www")
-?>
+
 <html>
   <head>
     <meta charset="utf-8">
